@@ -2,7 +2,7 @@
 
 The bundled instructions are an independent engineering synthesis of NVIDIA's CUDA Rust source and books, inspected on **2026-10-28** at commit **a4a939a9b5f01f3bf712e92386922e1bc7c434a9**. They are not NVIDIA documentation or an NVIDIA-endorsed product.
 
-[upstream.json](upstream.json) records exact source paths, immutable GitHub URLs, and SHA-256 hashes. Use it to open a pinned source directly or compare a local checkout. It records evidence, not a claim that every GPU path was executed. The root README records this package's validation limits.
+[upstream.json](upstream.json) records exact source paths, immutable GitHub URLs, and SHA-256 hashes. Use it to open a pinned source directly or compare a local checkout. It records evidence, not a claim that every GPU path was executed. GPU builds, JIT compilation, execution, sanitizers, and performance measurements remain unverified for the bundled starters.
 
 ## Primary entry points
 
@@ -33,6 +33,20 @@ The bundled instructions are an independent engineering synthesis of NVIDIA's CU
 | Raw kernels/foreign handles | Tile interoperability chapter plus current runtime retention implementation |
 | Tune candidates | Tile autotuning chapter; `experimental-tune` feature |
 | Intrinsic contribution | SIMT catalog-generated-intrinsics and adding-new-intrinsics chapters |
+
+## Package checks
+
+From the skill repository root, use Python 3.11+ for the validator and test suite:
+
+```bash
+python3 tools/validate.py
+python3 -m unittest discover -s tests -v
+python3 tools/validate.py --upstream /path/to/NVIDIA-cuda-rust
+```
+
+The optional upstream check verifies the commit and recorded source hashes, including dirty-tree drift. Tests exercise multiple/incomplete toolkit installations, explicit overrides, native header layouts, CLI exit codes, installation outside the repository, and rejected package mutations. Skill-local links must remain inside the installable `cuda-rust/` directory, and starters must retain their required dependencies and compiler components. These CPU checks do not establish device correctness.
+
+The installed inventory helper needs Python 3.10+. It performs no installation or compilation, disables rustup auto-installation, and prints only selected CUDA-related environment variables. `--strict` exits 2 for missing required probes, an invalid toolkit setting, or a non-Linux host in SIMT/Tile modes. Inspect mode remains informational. A zero exit does not certify version, architecture, or kernel compatibility; upstream `cargo oxide doctor` remains the deeper SIMT diagnostic.
 
 ## Refreshing the package
 
