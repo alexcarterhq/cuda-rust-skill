@@ -1,0 +1,4 @@
+interface:
+  display_name: "CUDA Rust"
+  short_description: "Build, debug, and tune NVIDIA CUDA kernels in Rust"
+  default_prompt: "Use $cuda-rust to implement and validate a CUDA Rust kernel with the appropriate SIMT or Tile model."

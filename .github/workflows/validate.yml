@@ -1,0 +1,23 @@
+name: Validate skill package
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate metadata, references, and starter manifests
+        run: python3 tools/validate.py
+      - name: Exercise read-only helper and validator behavior
+        run: python3 -m unittest discover -s tests -v
+      - name: Parse and check Rust starter formatting without CUDA
+        run: |
+          rustup run stable rustfmt --edition 2024 --check cuda-rust/assets/simt-vector-add/src/main.rs
+          rustup run stable rustfmt --edition 2024 --check cuda-rust/assets/tile-vector-add/src/main.rs

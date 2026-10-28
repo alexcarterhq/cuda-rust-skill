@@ -1,0 +1,192 @@
+{
+  "repository": "https://github.com/NVIDIA/cuda-rust",
+  "commit": "a4a939a9b5f01f3bf712e92386922e1bc7c434a9",
+  "inspected_on": "2026-10-28",
+  "toolchains": {
+    "host": "1.98.0",
+    "simt": "1.99.1",
+    "tile": "1.98.0"
+  },
+  "sources": [
+    {
+      "path": "README.md",
+      "sha256": "72a66e56e67375794187813941708566b931080d1b6b884889d463c660f6c759",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/README.md"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "cb65d86df6a26ca4152b004ec358d49d20de829ef30be74486df038342c3ccac",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/AGENTS.md"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "b2887c429b3f7c109df706e2f361ad2fd2a9762fdb68be3ac1fc658eb5d218df",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/Cargo.toml"
+    },
+    {
+      "path": "rust-toolchain.toml",
+      "sha256": "b047da722546017898020d59b65ff7015ec8c78905176e944444e758667d03b9",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/rust-toolchain.toml"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "65cd09d83a0ceb632ee3617a4446996a57cdcf3bb49e725e0b247a767a3c2af5",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/CONTRIBUTING.md"
+    },
+    {
+      "path": "cuda-core/README.md",
+      "sha256": "12978a4ea13932889ac3f05706134e8089d9f5d4b8539944e6f7bbdae957db74",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-core/README.md"
+    },
+    {
+      "path": "cuda-async/README.md",
+      "sha256": "e8e9c4eb33145ee6a9992c06adc885c3415e01e4937db0834ae3e43776ef6ba5",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-async/README.md"
+    },
+    {
+      "path": "cuda-oxide/README.md",
+      "sha256": "493b36b5004ff82613ebb4f91d4a584ae75c307dc6b0c5bf2433ef451ae886a7",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/README.md"
+    },
+    {
+      "path": "cuda-oxide/rust-toolchain.toml",
+      "sha256": "a52fb5c97a2974a9af3581cc779d0763e89f7cd025b5343530f597be742cc8a9",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/rust-toolchain.toml"
+    },
+    {
+      "path": "cuda-oxide/crates/cargo-oxide/src/commands/scaffold.rs",
+      "sha256": "72c4c0ec766993747ace649d09147678139a9be22ed07300811972d2938eaf38",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/crates/cargo-oxide/src/commands/scaffold.rs"
+    },
+    {
+      "path": "cuda-oxide/crates/cargo-oxide/src/backend_source.rs",
+      "sha256": "bcc27f917e85812ee7cf1d56e680e76a9bf00d0b317b855c1aaadb7a3b6a6dfb",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/crates/cargo-oxide/src/backend_source.rs"
+    },
+    {
+      "path": "cuda-oxide/crates/rustc-codegen-cuda/examples/vecadd/src/main.rs",
+      "sha256": "2364802cbac732727bce8f8c96cfc6ec1c98835c66267d28bafb5fdb67cd57d7",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/crates/rustc-codegen-cuda/examples/vecadd/src/main.rs"
+    },
+    {
+      "path": "cuda-oxide/crates/rustc-codegen-cuda/examples/vecadd/Cargo.toml",
+      "sha256": "36c3ab74801e44c0ac3bab630363e7df448c8c4cbae1f326990430e835c46032",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/crates/rustc-codegen-cuda/examples/vecadd/Cargo.toml"
+    },
+    {
+      "path": "cuda-oxide/cuda-oxide-book/getting-started/hello-gpu.md",
+      "sha256": "b66d1f345710ad160320f0c60a6926ed87c8318641eab4c27639820e70420668",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/cuda-oxide-book/getting-started/hello-gpu.md"
+    },
+    {
+      "path": "cuda-oxide/cuda-oxide-book/getting-started/installation.md",
+      "sha256": "58a187fce84bae8fa1244779e83830503e8692ee3e2ea7a2c5d72ff0253c27e5",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/cuda-oxide-book/getting-started/installation.md"
+    },
+    {
+      "path": "cuda-oxide/cuda-oxide-book/gpu-safety/the-safety-model.md",
+      "sha256": "162ece5d2db2ba2905f1f8f6fd768884c3293546339067d48b348033cffeae8f",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/cuda-oxide-book/gpu-safety/the-safety-model.md"
+    },
+    {
+      "path": "cuda-oxide/cuda-oxide-book/gpu-programming/launching-kernels.md",
+      "sha256": "1559f8ae2e935324b07bf2d8f2e9f08c105a001aa2660180638f71b96df6fbdc",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/cuda-oxide-book/gpu-programming/launching-kernels.md"
+    },
+    {
+      "path": "cuda-oxide/cuda-oxide-book/advanced/shared-memory-and-synchronization.md",
+      "sha256": "9008e8cd120060a45b1ef68b0112d95c4a44f7663e2cef0327f1bdf2ede5c9f2",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/cuda-oxide-book/advanced/shared-memory-and-synchronization.md"
+    },
+    {
+      "path": "cuda-oxide/cuda-oxide-book/appendix/supported-features.md",
+      "sha256": "d29522d4be326f234d3f0436657893233e6f371e9c129b415c32a6c2633d3e26",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/cuda-oxide-book/appendix/supported-features.md"
+    },
+    {
+      "path": "cuda-oxide/cuda-oxide-book/compiler/adding-new-intrinsics.md",
+      "sha256": "c99ebfcf948cd2948c4739db092cc9926265a1baf8d0c279bbb67ff8e6698eed",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/cuda-oxide-book/compiler/adding-new-intrinsics.md"
+    },
+    {
+      "path": "cuda-oxide/cuda-oxide-book/compiler/catalog-generated-intrinsics.md",
+      "sha256": "e39fc79943ef62d5f3b9ea5659bb181b4fc9d6c678770b77c5a15cbd7fd943ce",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-oxide/cuda-oxide-book/compiler/catalog-generated-intrinsics.md"
+    },
+    {
+      "path": "cutile-rs/README.md",
+      "sha256": "88300a7f1dfc278f5c5fd447b3c47927f5d82b3aab42a3879dab7f514ba69c4c",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/README.md"
+    },
+    {
+      "path": "cutile-rs/rust-toolchain.toml",
+      "sha256": "43446a25086218c94f86227270c00901b157daeab8d5c3a1506bce0d321fe336",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/rust-toolchain.toml"
+    },
+    {
+      "path": "cutile-rs/cutile/src/api.rs",
+      "sha256": "5311eed216722e97c069203766d7cede396686983eeed63d07bfaa56685fb167",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile/src/api.rs"
+    },
+    {
+      "path": "cutile-rs/cutile/src/prelude.rs",
+      "sha256": "30c9dbdf42f386bf564d73f706b0e3a9ece4ba26411b77aaacd73b5525224737",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile/src/prelude.rs"
+    },
+    {
+      "path": "cutile-rs/cutile-examples/examples/async_saxpy.rs",
+      "sha256": "93061268d356e93dbc8c3c6ff264e43f0287ec3e72d0a3974fd1def08e23c247",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-examples/examples/async_saxpy.rs"
+    },
+    {
+      "path": "cutile-rs/cutile-book/reference/compatibility.md",
+      "sha256": "e03f54222d9ce27d04b147242436ded42734debc6d12d8dc46b06528601bf532",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-book/reference/compatibility.md"
+    },
+    {
+      "path": "cutile-rs/cutile-book/guide/host-vs-device.md",
+      "sha256": "bb577a6672c8a6b7d823f91c01e119218c7261cd6499e1b6ef97e6b3917659a6",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-book/guide/host-vs-device.md"
+    },
+    {
+      "path": "cutile-rs/cutile-book/guide/tensors-and-tiles.md",
+      "sha256": "0d962e3de52239385af8a8497a7e15fe36a436b94662a200dda72578851085db",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-book/guide/tensors-and-tiles.md"
+    },
+    {
+      "path": "cutile-rs/cutile-book/guide/bounds-check-placement.md",
+      "sha256": "9c8230b8b627b62fc976152ef16d9d6ef08c4428506c6e873c52b4916562e9ae",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-book/guide/bounds-check-placement.md"
+    },
+    {
+      "path": "cutile-rs/cutile-book/guide/jit-compilation.md",
+      "sha256": "f8fda340ef71c20fa350b53a5faf0e02e266b66a5d1250a8588f2bb456056698",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-book/guide/jit-compilation.md"
+    },
+    {
+      "path": "cutile-rs/cutile-book/guide/debugging-and-profiling.md",
+      "sha256": "c4de1affd31780f17ef44391cc8a73c900652164da29081569447e308d7d18d0",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-book/guide/debugging-and-profiling.md"
+    },
+    {
+      "path": "cutile-rs/cutile-book/guide/interoperability.md",
+      "sha256": "94cc2a18dbe32c53da2ca183dd9fe6d62e5567681c75f37c540dee1333b7c3e4",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-book/guide/interoperability.md"
+    },
+    {
+      "path": "cutile-rs/cutile-book/guide/autotuning.md",
+      "sha256": "8c780d168cd8f03c7cda00abdf66dc9a551ff58e942965a632e3d4739fca3ef4",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-book/guide/autotuning.md"
+    },
+    {
+      "path": "cutile-rs/cutile-book/tutorials/02-vector-addition.md",
+      "sha256": "f0b602c879688ccaf4e4450ba27764eeb21baba965ac8c46e452c88f280f3c76",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-book/tutorials/02-vector-addition.md"
+    },
+    {
+      "path": "cutile-rs/scripts/run_cpu_tests.sh",
+      "sha256": "0fba518ddc76d6ffb8ae5cef2a0a690f2619283a810b55682094e4517d5262b9",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/scripts/run_cpu_tests.sh"
+    }
+  ]
+}
