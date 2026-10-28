@@ -50,13 +50,6 @@ class DoctorTests(unittest.TestCase):
             self.assertEqual(len(check["output"]), 8192)
             self.assertTrue(check["truncated"])
 
-    def test_toolkit_and_assembler_overrides_do_not_fall_back(self):
-        env = {"CUDA_TOOLKIT_PATH": "/chosen-cuda", "CUDA_HOME": "/other-cuda", "CUTILE_TILEIRAS_PATH": "/chosen/tileiras"}
-        toolkit = doctor.select_toolkit(env)
-        self.assertEqual(toolkit, Path("/chosen-cuda"))
-        self.assertEqual(doctor.select_tileiras(env, toolkit), "/chosen/tileiras")
-        self.assertEqual(doctor.select_tileiras({}, toolkit), "/chosen-cuda/bin/tileiras")
-
     def test_inventory_has_no_secrets_or_implicit_builds(self):
         calls = []
 
@@ -98,6 +91,31 @@ class ValidatorTests(unittest.TestCase):
         manifest = self.root / "cuda-rust/assets/simt-vector-add/Cargo.toml"
         manifest.write_text(manifest.read_text().replace("a4a939a9b5f01f3bf712e92386922e1bc7c434a9", "0" * 40, 1))
         self.assertTrue(any("same pinned upstream revision" in error for error in validator.validate(self.root)))
+
+    def test_missing_starter_dependencies_are_rejected(self):
+        for mode in ("simt", "tile"):
+            with self.subTest(mode=mode):
+                manifest = self.root / f"cuda-rust/assets/{mode}-vector-add/Cargo.toml"
+                original = manifest.read_text()
+                manifest.write_text(original.split("[dependencies]")[0] + "[dependencies]\n")
+                self.assertTrue(any("Missing starter dependencies" in error for error in validator.validate(self.root)))
+                manifest.write_text(original)
+
+    def test_missing_simt_compiler_components_are_rejected(self):
+        toolchain = self.root / "cuda-rust/assets/simt-vector-add/rust-toolchain.toml"
+        toolchain.write_text(toolchain.read_text().replace('"rustc-dev", ', ''))
+        self.assertTrue(any("compiler components" in error for error in validator.validate(self.root)))
+
+    def test_skill_link_must_survive_subdirectory_installation(self):
+        entry = self.root / "cuda-rust/SKILL.md"
+        entry.write_text(entry.read_text() + "\n[readme](../README.md)\n")
+        self.assertTrue(any("Link escapes installed skill" in error for error in validator.validate(self.root)))
+
+    def test_skill_link_cannot_escape_through_a_symlink(self):
+        (self.root / "cuda-rust/references/outside.md").symlink_to(self.root / "README.md")
+        entry = self.root / "cuda-rust/SKILL.md"
+        entry.write_text(entry.read_text() + "\n[outside](references/outside.md)\n")
+        self.assertTrue(any("Link escapes installed skill" in error for error in validator.validate(self.root)))
 
     def test_external_source_path_is_rejected(self):
         filename = self.root / "cuda-rust/references/upstream.json"

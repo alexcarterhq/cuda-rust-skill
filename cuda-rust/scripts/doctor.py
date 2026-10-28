@@ -12,13 +12,16 @@ import subprocess
 
 
 ENV_KEYS = (
-    "CUDA_TOOLKIT_PATH", "CUDA_HOME", "CUTILE_TILEIRAS_PATH",
+    "CUDA_TOOLKIT_PATH", "CUDA_HOME", "CUDA_TOOLKIT_TARGET_DIR", "CUTILE_TILEIRAS_PATH",
     "CUTILE_BYTECODE_VERSION", "CUDA_OXIDE_DEVICE_ARCH", "CUDA_RUST_DEBUG",
 )
 STANDARD_TOOLKITS = (
-    "/usr/local/cuda-13.4", "/usr/local/cuda-13.3", "/usr/local/cuda-13.2",
+    "/usr/local/cuda-13.3", "/usr/local/cuda-13.2",
     "/usr/local/cuda-13", "/usr/local/cuda", "/opt/cuda",
 )
+# The build's header discovery and the Tile JIT's assembler discovery have
+# different candidate lists and version floors at the recorded revision.
+TILEIRAS_TOOLKITS = ("/usr/local/cuda-13.4", *STANDARD_TOOLKITS)
 
 
 def probe(argv, timeout=4):
@@ -43,18 +46,78 @@ def probe(argv, timeout=4):
     }
 
 
+def toolkit_version(root, target_dir=None):
+    """Read native-platform cuda.h, mirroring the recorded upstream sources."""
+    includes = [root / "include"]
+    if target_dir and target_dir.strip():
+        includes = [root / "targets" / target_dir / "include"]
+    elif platform.system() == "Linux":
+        targets = {
+            "x86_64": ("x86_64-linux",),
+            "aarch64": ("sbsa-linux", "aarch64-linux"),
+            "arm64": ("sbsa-linux", "aarch64-linux"),
+        }.get(platform.machine(), ())
+        includes.extend(root / "targets" / target / "include" for target in targets)
+    for include in includes:
+        header = include / "cuda.h"
+        if not header.is_file():
+            continue
+        try:
+            for line in header.read_text(encoding="utf-8").splitlines():
+                parts = line.split()
+                if len(parts) >= 3 and parts[:2] == ["#define", "CUDA_VERSION"]:
+                    value = parts[2]
+                    if value.isascii() and value.isdecimal() and int(value) <= 0xffffffff:
+                        return int(value)
+        except (OSError, UnicodeError) as error:
+            raise ValueError(f"Cannot read {header}: {error}") from error
+        raise ValueError(f"No valid CUDA_VERSION in {header}")
+    raise ValueError(f"No cuda.h found in {', '.join(str(p) for p in includes)}")
+
+
 def select_toolkit(env):
+    """Resolve build headers; explicit invalid settings must not fall back."""
+    for key in ("CUDA_TOOLKIT_PATH", "CUDA_HOME"):
+        if key not in env:
+            continue
+        if not env[key]:
+            raise ValueError(f"{key} is set to an empty string")
+        root = Path(env[key])
+        try:
+            if toolkit_version(root, env.get("CUDA_TOOLKIT_TARGET_DIR")) < 13000:
+                raise ValueError("CUDA headers must be 13.0 or newer")
+        except ValueError as error:
+            raise ValueError(f"{key}={env[key]} is invalid: {error}") from error
+        return root
+    for candidate in STANDARD_TOOLKITS:
+        root = Path(candidate)
+        try:
+            if toolkit_version(root, env.get("CUDA_TOOLKIT_TARGET_DIR")) >= 13000:
+                return root
+        except ValueError:
+            continue
+    return None
+
+
+def select_tileiras(env):
+    """Resolve the JIT assembler independently of the build's CUDA headers."""
+    if env.get("CUTILE_TILEIRAS_PATH"):
+        return env["CUTILE_TILEIRAS_PATH"]
     for key in ("CUDA_TOOLKIT_PATH", "CUDA_HOME"):
         if env.get(key):
-            return Path(env[key]).expanduser()
-    return next((Path(p) for p in STANDARD_TOOLKITS if Path(p).is_dir()), None)
-
-
-def select_tileiras(env, toolkit):
-    if env.get("CUTILE_TILEIRAS_PATH"):
-        return str(Path(env["CUTILE_TILEIRAS_PATH"]).expanduser())
-    if toolkit is not None:
-        return str(toolkit / "bin" / "tileiras")
+            binary = Path(env[key]) / "bin" / "tileiras"
+            if binary.is_file():
+                return str(binary)
+            # Upstream uses only the first nonempty toolkit variable, then
+            # default installations, rather than trying the second variable.
+            break
+    for candidate in TILEIRAS_TOOLKITS:
+        root = Path(candidate)
+        try:
+            if toolkit_version(root) >= 13020 and (root / "bin/tileiras").is_file():
+                return str(root / "bin/tileiras")
+        except ValueError:
+            continue
     return shutil.which("tileiras") or "tileiras"
 
 
@@ -66,15 +129,18 @@ def inventory(mode="inspect", upstream=None, timeout=4):
     snapshot = json.loads(
         (Path(__file__).resolve().parents[1] / "references" / "upstream.json").read_text()
     )
-    toolkit = select_toolkit(os.environ)
-    nvcc = str(toolkit / "bin" / "nvcc") if toolkit else "nvcc"
+    toolkit = None
+    toolkit_error = None
+    try:
+        toolkit = select_toolkit(os.environ)
+    except ValueError as error:
+        toolkit_error = str(error)
     commands = {
         "rustc": ["rustc", "-Vv"],
         "cargo": ["cargo", "--version"],
         "rustup": ["rustup", "toolchain", "list"],
         "gpu": ["nvidia-smi", "--query-gpu=name,driver_version,compute_cap", "--format=csv,noheader"],
-        "toolkit": [nvcc, "--version"],
-        "tileiras": [select_tileiras(os.environ, toolkit), "--version"],
+        "tileiras": [select_tileiras(os.environ), "--version"],
         "clang": [first_tool(("clang-21", "clang-22", "clang")), "--version"],
         "llc": [first_tool(("llc-23", "llc-22", "llc-21", "llc")), "--version"],
         "sanitizer": ["compute-sanitizer", "--version"],
@@ -82,6 +148,10 @@ def inventory(mode="inspect", upstream=None, timeout=4):
         "nsight_systems": ["nsys", "--version"],
     }
     checks = {name: probe(argv, timeout) for name, argv in commands.items()}
+    checks["toolkit"] = probe([str(toolkit / "bin/nvcc"), "--version"], timeout) if toolkit else {
+        "status": "error" if toolkit_error else "missing",
+        "output": toolkit_error or "No CUDA 13.0+ headers found in default toolkit locations",
+    }
     required = ["rustc", "cargo", "gpu", "toolkit"] if mode != "inspect" else []
     if mode == "tile":
         required.append("tileiras")
@@ -92,6 +162,8 @@ def inventory(mode="inspect", upstream=None, timeout=4):
         "Inventory only: availability does not certify version, architecture, ABI, or kernel support.",
         "nvidia-smi driver capability is separate from the installed toolkit version.",
         "llc inventory covers PATH tools, not every toolchain-private LLVM binary.",
+        "Toolkit headers and Tile JIT assembler are resolved separately using the recorded snapshot's Linux rules.",
+        "Header discovery targets this host unless CUDA_TOOLKIT_TARGET_DIR is set; Cargo cross-target configuration is not inspected.",
         "cargo oxide doctor is intentionally not executed; it may build or resolve dependencies.",
     ]
     if platform.system() != "Linux":

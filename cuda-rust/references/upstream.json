@@ -187,6 +187,21 @@
       "path": "cutile-rs/scripts/run_cpu_tests.sh",
       "sha256": "0fba518ddc76d6ffb8ae5cef2a0a690f2619283a810b55682094e4517d5262b9",
       "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/scripts/run_cpu_tests.sh"
+    },
+    {
+      "path": "cuda-bindings/build.rs",
+      "sha256": "2f775354b218f0daa1d90eda70f61687779546acbc70f796396018fc2095e243",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-bindings/build.rs"
+    },
+    {
+      "path": "cuda-bindings/toolkit_target.rs",
+      "sha256": "e3ad914f7cfe7276695f4fd8071efd54eb7b5e98b2c5b5e7188e418bce5d2574",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cuda-bindings/toolkit_target.rs"
+    },
+    {
+      "path": "cutile-rs/cutile-compiler/src/cuda_tile_runtime_utils.rs",
+      "sha256": "4d6ba5eb7de662978e35ac5cb6fcbbaff71d6097cece3c0849f7939c0e1c2928",
+      "url": "https://github.com/NVIDIA/cuda-rust/blob/a4a939a9b5f01f3bf712e92386922e1bc7c434a9/cutile-rs/cutile-compiler/src/cuda_tile_runtime_utils.rs"
     }
   ]
 }
