@@ -77,7 +77,7 @@ python3 cuda-rust/scripts/doctor.py --mode tile --json
 python3 cuda-rust/scripts/doctor.py --upstream /path/to/NVIDIA-cuda-rust
 ```
 
-The script probes versions/availability without building or installing software. It disables rustup auto-installation for its probes. It prints only selected CUDA-related environment variables, not your full environment. `--strict` exits 2 for missing required probes or a non-Linux execution target; a zero exit does **not** certify version/architecture compatibility. Upstream `cargo oxide doctor` remains the deeper SIMT-specific diagnostic.
+The script probes versions/availability without building or installing software. It disables rustup auto-installation for its probes. It prints only selected CUDA-related environment variables, not your full environment. Build-toolkit discovery checks native-platform CUDA headers using the pinned source's candidate order; an invalid or empty explicit toolkit setting is an error. Tile assembler discovery is independent and can select a different installation. `CUDA_TOOLKIT_TARGET_DIR` selects a header target explicitly; other Cargo cross-compilation settings are not inspected. `--strict` exits 2 for missing required probes, an invalid toolkit setting, or a non-Linux execution target in SIMT/Tile modes; a zero exit does **not** certify version/architecture compatibility. Upstream `cargo oxide doctor` remains the deeper SIMT-specific diagnostic.
 
 ## Starter projects and validation limits
 
@@ -97,7 +97,7 @@ python3 -m unittest discover -s tests -v
 python3 tools/validate.py --upstream /path/to/NVIDIA-cuda-rust
 ```
 
-The optional upstream check verifies both the commit and every recorded source hash, including dirty-tree drift. See [sources and maintenance](cuda-rust/references/sources.md) before refreshing a revision. Existing projects keep their own source/toolchain choices.
+The optional upstream check verifies both the commit and every recorded source hash, including dirty-tree drift. Tests also exercise multiple/incomplete toolkit installations, explicit overrides, native header layouts, CLI exit codes, installation outside the repository, and rejected package mutations. Skill-local links must remain inside the installable `cuda-rust/` directory, and starters must retain their required dependencies and compiler components. See [sources and maintenance](cuda-rust/references/sources.md) before refreshing a revision. Existing projects keep their own source/toolchain choices.
 
 ## License
 

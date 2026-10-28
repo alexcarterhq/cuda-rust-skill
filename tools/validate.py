@@ -57,6 +57,8 @@ def validate(root=REPO, upstream=None):
             linked = (markdown.parent / unquote(target.split("#", 1)[0])).resolve()
             if not linked.is_relative_to(root):
                 errors.append(f"Link escapes package: {markdown.relative_to(root)} -> {target}")
+            elif markdown.is_relative_to(skill) and not linked.is_relative_to(skill):
+                errors.append(f"Link escapes installed skill: {markdown.relative_to(root)} -> {target}")
             elif not linked.exists():
                 errors.append(f"Broken local link: {markdown.relative_to(root)} -> {target}")
 
@@ -83,6 +85,14 @@ def validate(root=REPO, upstream=None):
             toolchain = tomllib.loads((folder / "rust-toolchain.toml").read_text())
             if toolchain["toolchain"]["channel"] != snapshot["toolchains"][mode]:
                 errors.append(f"{mode} starter toolchain differs from the source snapshot")
+            required_dependencies = {"cuda-device", "cuda-host", "cuda-core"} if mode == "simt" else {"cutile"}
+            missing = required_dependencies - manifest.get("dependencies", {}).keys()
+            if missing:
+                errors.append(f"{mode}: Missing starter dependencies: {', '.join(sorted(missing))}")
+            if mode == "simt" and not {"rust-src", "rustc-dev", "llvm-tools"}.issubset(
+                toolchain["toolchain"].get("components", [])
+            ):
+                errors.append("SIMT starter is missing required compiler components")
             for name, dependency in manifest["dependencies"].items():
                 if dependency.get("git") != UPSTREAM_URL + ".git" or dependency.get("rev") != commit:
                     errors.append(f"{mode}/{name}: dependency must use the same pinned upstream revision")

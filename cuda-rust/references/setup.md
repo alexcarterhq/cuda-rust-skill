@@ -66,7 +66,11 @@ cargo run -p cutile-examples --example saxpy
 
 For a standalone project, copy `assets/tile-vector-add/` and run `cargo run --release` in that directory. Its conservative shape is divisible by the tile; extend shape coverage before production use. Host compilation alone does not exercise JIT or GPU execution.
 
-`CUDA_TOOLKIT_PATH` takes precedence over `CUDA_HOME`; otherwise upstream probes standard toolkit locations. `CUTILE_TILEIRAS_PATH` overrides the assembler from that toolkit. `CUTILE_BYTECODE_VERSION` requests a particular supported IR version; an unsupported override fails instead of silently downgrading. A newer driver cannot teach an old assembler a new bytecode format. Prefer a coherent toolkit/assembler installation.
+Build-header discovery checks `CUDA_TOOLKIT_PATH`, then `CUDA_HOME`; an explicitly empty or invalid value fails instead of falling back. With neither variable set, it probes standard locations for CUDA 13.0+ headers. `CUDA_TOOLKIT_TARGET_DIR` selects an exclusive `targets/<dir>/include` tree. Without that override, upstream checks top-level headers followed by layouts for Cargo's build target. The lightweight inventory defaults to its own host and does not inspect Cargo cross-target configuration.
+
+Tile JIT assembler discovery is separate: a nonempty `CUTILE_TILEIRAS_PATH` selects that binary directly. Otherwise it tries `bin/tileiras` under the first nonempty toolkit variable, then standard installations with CUDA 13.2+ headers and `tileiras`, then PATH. A missing assembler under an explicit toolkit can therefore lead to a different installation; a missing explicit `CUTILE_TILEIRAS_PATH` does not fall back. Inspect the actual probe command in the inventory JSON. Environment path values are literal; use an expanded absolute path rather than a quoted `~`.
+
+`CUTILE_BYTECODE_VERSION` requests a particular supported IR version; an unsupported override fails instead of silently downgrading. A newer driver cannot teach an old assembler a new bytecode format. Prefer a coherent toolkit/assembler installation.
 
 Nix shells live in the component directories. Inspect their actual definitions before relying on a README transcript's Rust version. `cutile-rs/cuda-tile-rs` is omitted from default members because building it downloads and compiles LLVM; `--workspace` includes it unless excluded. Avoid triggering that cost for an unrelated library change.
 
