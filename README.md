@@ -6,7 +6,23 @@ The skill targets upstream commit [`a4a939a9b5f0`](https://github.com/NVIDIA/cud
 
 ## Install
 
-Clone this repository, then install the **`cuda-rust/` subdirectory**, which contains `SKILL.md` and all supporting resources:
+Install for both Codex and Claude Code across your projects with [the skills CLI](https://github.com/vercel-labs/skills):
+
+```bash
+npx skills add alexcarterhq/cuda-rust-skill --skill cuda-rust --agent codex claude-code --global
+```
+
+Requires Node.js 22.20+ and Git. The command installs the complete skill, including its references, scripts, and starter projects. To install for just one agent, use `--agent codex` or `--agent claude-code`. Omit `--global` to install into the current project. Add `--copy` to copy files instead of using the CLI's default symlinks, or `--yes` to skip its confirmation prompts.
+
+Preview the available skill without installing:
+
+```bash
+npx skills add alexcarterhq/cuda-rust-skill --list
+```
+
+### Manual installation
+
+Alternatively, clone this repository, then install the **`cuda-rust/` subdirectory**, which contains `SKILL.md` and all supporting resources:
 
 ```bash
 git clone https://github.com/alexcarterhq/cuda-rust-skill.git
@@ -85,4 +101,4 @@ The optional upstream check verifies both the commit and every recorded source h
 
 ## License
 
-[Apache-2.0](LICENSE). Starter patterns adapted from NVIDIA CUDA Rust retain attribution in [NOTICE](NOTICE) and their source headers. The skill prose and helper scripts are independently authored.
+[Apache-2.0](LICENSE). Starter patterns adapted from NVIDIA CUDA Rust retain attribution in [NOTICE](NOTICE) and their source headers. The skill prose and helper scripts are independently authored. Copies of the license and notices are included inside `cuda-rust/` so they travel with npx and manual installations.

@@ -1,0 +1,18 @@
+CUDA Rust skill for Codex and Claude Code
+Copyright 2026 Alex (GitHub: alexcarterhq)
+
+This is an independent skill package, not affiliated with or endorsed by NVIDIA.
+
+The starter Rust programs adapt patterns from NVIDIA/cuda-rust at commit
+a4a939a9b5f01f3bf712e92386922e1bc7c434a9:
+- cuda-oxide/cuda-oxide-book/getting-started/hello-gpu.md
+- cutile-rs/cutile-book/tutorials/02-vector-addition.md
+- cutile-rs/README.md
+- cutile-rs/cutile/src/api.rs
+
+Upstream copyright: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES.
+All rights reserved. Upstream is licensed under Apache License, Version 2.0.
+Changes include revision-pinned starter packaging, deterministic full-output
+verification, SIMT boundary-size cases, and explicit error propagation.
+
+NVIDIA, CUDA, and other referenced product names belong to their respective owners.

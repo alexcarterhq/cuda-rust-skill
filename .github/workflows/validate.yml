@@ -21,3 +21,36 @@ jobs:
         run: |
           rustup run stable rustfmt --edition 2024 --check cuda-rust/assets/simt-vector-add/src/main.rs
           rustup run stable rustfmt --edition 2024 --check cuda-rust/assets/tile-vector-add/src/main.rs
+
+  npx-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install the skill for Codex and Claude Code in a temporary project
+        run: |
+          install_dir=$(mktemp -d)
+          cd "$install_dir"
+          DISABLE_TELEMETRY=1 npx --yes skills@1.7.4 add "$GITHUB_WORKSPACE" --skill cuda-rust --agent codex claude-code --copy --yes
+          python3 - "$GITHUB_WORKSPACE" "$install_dir" <<'PY'
+          from pathlib import Path
+          import subprocess
+          import sys
+
+          repository, project = map(Path, sys.argv[1:])
+          tracked = subprocess.check_output(
+              ["git", "-C", str(repository), "ls-files", "-z", "--", "cuda-rust/"],
+              text=True,
+          ).split("\0")
+          files = [Path(name) for name in tracked if name]
+          assert files, "No skill files found"
+          for agent in (".agents", ".claude"):
+              destination = project / agent / "skills" / "cuda-rust"
+              for filename in files:
+                  installed = destination / filename.relative_to("cuda-rust")
+                  assert installed.is_file(), f"Missing installed file: {installed}"
+                  assert installed.read_bytes() == (repository / filename).read_bytes(), f"Changed installed file: {installed}"
+              print(f"Verified {len(files)} installed files for {agent}")
+          PY
